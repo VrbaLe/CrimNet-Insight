@@ -1,0 +1,153 @@
+<div class="container" style="background-image: url('dash.jpg');">
+    <div class="left-panel">
+        <section>
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="example-button-container">
+                  <button mat-fab extended (click)="onBazaClick()">
+                    <mat-icon>storage</mat-icon>
+                    BAZA
+                  </button>
+                </div>
+                <br><br>
+                <div class="example-button-container">
+                  <button mat-fab extended (click)="onAkteriClick()">
+                    <mat-icon>person</mat-icon>
+                    Akteri
+                  </button>
+              </div>
+                <div class="example-button-container">
+                  <button mat-fab extended (click)="onVozilaClick()">
+                    <mat-icon>directions_car</mat-icon>
+                    Vozila
+                  </button>
+                </div>
+                <div class="example-button-container">
+                  <button mat-fab extended (click)="onLokacijeClick()">
+                    <mat-icon>info</mat-icon>
+                    Lokacije
+                  </button>
+              </div>
+                <div class="example-button-container">
+                  <button mat-fab extended (click)="onIncidentiClick()">
+                    <mat-icon>warning</mat-icon>
+                    Incidenti
+                  </button>
+              </div>
+              </div>
+            </div>
+          </section>
+          <div *ngIf="title !== 'Baza' && selectedNode">
+            <div *ngFor="let item of mongoData" class="card">
+
+              <button class="del-btnMongo" (click)="onDelMongo()" title="Obrisi" *ngIf="isEditing">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+              </button>
+
+              <h3 class="card-title">
+                {{ item.dosijeId || item.opisVozilaId || item.tokDesavanjaId || item.opisLokacijeId || 'Detalji' }}
+              </h3>
+
+              <ng-container *ngIf="item.jmbg">
+                <p><strong>JMBG:</strong> {{ item.jmbg }}</p>
+                <p><strong>Dosije:</strong> {{ item.dosije || 'Nema dosijea' }}</p>
+              </ng-container>
+
+              <ng-container *ngIf="item.id">
+                <p><strong>Opis:</strong> {{ item.opis || item.tok || 'Nema opisa' }}</p>
+              </ng-container>
+
+              
+              <div *ngIf="item.slika">
+                <h4>Slika:</h4>
+                <div class="slike-container">
+                  <img
+                    [src]="'http://localhost:3000/uploads/' + item.slika"
+                    alt="Slika"
+                    class="slika"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  
+    <div class="center-panel">
+      <div class="graph">
+        <!-- graf iz baze --->
+        
+      </div>
+    </div>
+  
+    <div class="right-panel">
+        <section>
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="modal" *ngIf="showAddNode">
+                  <button class="close-btn" (click)="toggleAddNode()">✖</button>
+                  <div class="modal-content">
+                    <h2>Dodaj Element</h2>
+                    <form (ngSubmit)="addNode()">
+                      <label for="elementType">Tip Elementa:</label>
+                      <select id="elementType" name="elementType" [(ngModel)]="selectedType" (change)="updateInputFields()">
+                        <option value="">Izaberite tip elementa</option>
+                        <option *ngFor="let type of nodeTypes" [value]="type">{{ type }}</option>
+                      </select>
+                
+                      <div *ngFor="let field of nodeAttributes; let i = index">
+                        <label for="additionalInfo{{i}}">{{ field }}:</label>
+                        <input type="text" id="additionalInfo{{i}}" [(ngModel)]="inputFields[i]" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+                
+                      <button type="submit">Dodaj</button>
+                    </form>
+                  </div>
+                </div>  
+                <div class="modal" *ngIf="showEditNode">
+                  <button class="close-btn" (click)="toggleEditNode()">✖</button>
+                  <div class="modal-content">
+                    <h2>Izmeni Element</h2>
+                    <form (ngSubmit)="editNode()">
+                      <label for="elementType">Tip Elementa:
+                      <span>{{ selectedType || 'Nema selektovanog tipa' }}</span>
+                      </label>
+                
+                      <div *ngFor="let field of nodeAttributes; let i = index">
+                        <label for="additionalInfo{{i}}">{{ field }}:</label>
+                        <input type="text" id="additionalInfo{{i}}" [(ngModel)]="inputFields[i]" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+                      <button type="submit">Izmeni</button>
+                    </form>
+                  </div>
+                </div>
+                <!--     
+                <div class="example-button-container">
+                    <button mat-fab extended (click)="toggleAddNode()">
+                        <mat-icon>add</mat-icon>
+                        Dodaj Element
+                    </button>
+                </div>
+                <div class="example-button-container">
+                    <button mat-fab extended>
+                        <mat-icon>link</mat-icon>
+                        Kreiraj Vezu
+                    </button>
+                </div>
+                -->   
+                <!-- beleskas -->
+                    <div class="note-container" *ngIf="title !== 'Baza' && selectedNode">
+                      <textarea class="note-input" [(ngModel)]="opis" placeholder="Unesite dosije/opis..." [disabled]="!(isEditing || addOpis)" ></textarea>
+                    </div>
+                    <div class="upload-container" *ngIf="title !== 'Baza' && selectedNode">
+                      <input type="file" (change)="onFileSelected($event)" accept="image/*" [disabled]="!(isEditing || addOpis)" />
+                      <div class="button-row">
+                        <button (click)="onEditMongo()" [disabled]="!(isEditing)">EDIT</button>
+                        <button (click)="onSaveMongo()" [disabled]="!(addOpis)">SAVE</button>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </section>
+    </div>
+</div>
+  

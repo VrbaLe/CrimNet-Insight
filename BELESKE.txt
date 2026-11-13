@@ -1,0 +1,59 @@
+Za Kriminalac koristiš JMBG, koji je string, dok za ostale tipove koristiš id, koji je broj.
+
+
+-poteskoce pri izradi zbog jmbg-a
+
+-CREATE komande za kreiranje baze
+-pozadina
+
+-dodavanje radiii, malo optimizacija i tjt
+
+-dodavanje full, brisanje full
+
+
+-TITLE = BAZA JE PROBLEM KOD BRISANJE PREKO GRAFA, resenoooo :)
+
+-brisanje kad je title==Baza ide preko ID(n) a inace preko n.id ili n.jmbg
+
+-prikaz cele baze imaa
+
+-malo dizajn cvorova i panela za graf da bude blur
+
+-izmeni element imaa
+
+-BUG: kad je Baza i selektuje se Kriminalac a zatim Neki drugi tip npr Vozilo, u input
+polja su podaci Kriminalca. // RESENO
+
+-BUG: kad se klikne isti scor 2 puta za edit, kao malo ubaguje.
+//RESENO, iskljuci inspect element
+
+-kad se klikne na panel odselektuje se cvor ali u kod ostaje taj //RESENO :)
+
+-za dodavanje Edge koristimo manipulation grafa // RESENO
+
+-delete edge i delete node ide na isti button // RESENOOO
+
+-update za veze i to je to // RESENOOO
+
+-mongoDB GET imamo
+
+-mongoDB POST imamo
+
+-mongoDB PUT imamo
+
+-mongoDB DEL imamo
+
+-ako je na BAZA, ne moze da se vidi kartica Node-a
+
+-kartica sa podacima i slika(mozda) aktera kad se klikne na njega sa grafa
+
+-deo za dodavanje opisa od strane korisnika (inspektora npr) i taj deo je vidljiv na stranici
+
+----------------------------------------
+
+-DOCKEEEER
+
+-BUG: kad se addNode preko panel mora da se bira tip iako si vec odabrao kad si 
+kliknuo na addNode. Odgovara samo za title = Baza. I nije bas bug.
+
+-prikaz veza iz baze??????????
